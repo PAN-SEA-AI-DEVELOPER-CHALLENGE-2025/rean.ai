@@ -1,0 +1,426 @@
+# =============================================================================
+# PAN-SEA PROJECT - COMPREHENSIVE GITIGNORE
+# =============================================================================
+# This gitignore covers all subdirectories: pan-sea-backend, pan-sea-frontend, 
+# voice-scraping-n-segmentation, whisper-service, and speech_dataset
+
+# =============================================================================
+# OPERATING SYSTEM FILES
+# =============================================================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# =============================================================================
+# PYTHON
+# =============================================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.env.local
+.env.production
+.env.development
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# =============================================================================
+# NODE.JS / REACT / NEXT.JS
+# =============================================================================
+# Dependencies
+node_modules/
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Testing
+/coverage
+
+# Next.js
+/.next/
+/out/
+
+# Production builds
+/build
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Vercel
+.vercel
+
+# TypeScript
+*.tsbuildinfo
+next-env.d.ts
+
+# ESLint
+.eslintcache
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Storybook build outputs
+.out
+.storybook-out
+
+# =============================================================================
+# DOCKER
+# =============================================================================
+# Docker
+.docker/
+docker-compose.override.yml
+
+# =============================================================================
+# EDITORS & IDEs
+# =============================================================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Vim
+*.swp
+*.swo
+*~
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# =============================================================================
+# LOGS AND RUNTIME FILES
+# =============================================================================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+*.lcov
+
+# nyc test coverage
+.nyc_output
+
+# =============================================================================
+# DATASETS AND LARGE FILES
+# =============================================================================
+# Large dataset directories (speech_dataset specific)
+dataset/
+merged_dataset/
+fixed_mega_dataset/
+mega_dataset/
+lsr42_dataset/
+rinabuoy_audio_temp/
+
+# Audio directories and files
+**/audio/
+**/wavs/
+uploads/
+
+# Audio file formats
+*.wav
+*.flac
+*.mp3
+*.ogg
+*.m4a
+*.aac
+
+# Video file formats
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# =============================================================================
+# MACHINE LEARNING & AI MODELS
+# =============================================================================
+# Model weights / checkpoints
+checkpoints/
+checkpoint-*/
+*.ckpt
+*.pt
+*.pth
+*.bin
+pytorch_model.bin
+*.safetensors
+
+# TensorBoard logs
+tensorboard/
+runs/
+tb_logs/
+
+# MFA models (voice-scraping-n-segmentation specific)
+mfa_models/
+
+# Results and temporary processing directories
+result/
+results/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# =============================================================================
+# CLOUD AND DEPLOYMENT
+# =============================================================================
+# AWS
+.aws/
+*.pem
+
+# Google Cloud
+gcloud/
+*.json
+!package.json
+!package-lock.json
+!tsconfig.json
+
+# Heroku
+.env.production
+.env.staging
+
+# =============================================================================
+# BACKUP AND TEMPORARY FILES
+# =============================================================================
+# Backup files
+*.bak
+*.backup
+*.old
+*.orig
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# =============================================================================
+# TESTING AND QUALITY ASSURANCE
+# =============================================================================
+# Test results
+test-results/
+playwright-report/
+test-report/
+
+# =============================================================================
+# PROJECT SPECIFIC EXCLUSIONS
+# =============================================================================
+# S3 upload logs (speech_dataset specific)
+s3_upload_*.log
+
+# Data processing directories (voice-scraping-n-segmentation specific)
+data/
+
+# Transcripts directory might contain large files
+transcripts/large_files/
+
+# Metadata cache
+metadata/cache/
+
+# =============================================================================
+# SECURITY AND CREDENTIALS
+# =============================================================================
+# Environment files with secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# SSH keys
+id_rsa
+id_rsa.pub
+*.key
+
+# Certificate files
+*.crt
+*.pem
+
+# =============================================================================
+# PACKAGE MANAGER LOCKS (Optional - uncomment if needed)
+# =============================================================================
+# Uncomment these if you want to ignore lock files
+# package-lock.json
+# yarn.lock
+# poetry.lock
+# Pipfile.lock
