@@ -1,3 +1,6 @@
+<!-- Monorepo note added by script -->
+**Note**: This project is part of the Pan-Sea monorepo. For monorepo-level setup and services overview, see `../README.md`.
+
 # Pan-Sea Education Platform
 
 A modern, intelligent classroom management platform built with Next.js that empowers teachers to start classes, engage students, and automatically generate comprehensive educational summaries with AI-powered insights.
@@ -35,7 +38,7 @@ src/
 
 ## ✨ Educational Features
 
-### 👩‍� For Teachers
+### 👩‍ For Teachers
 - **Create Classes**: Form with subject, grade level, classroom, and student roster
 - **Class Controls**: Start/end classes with real-time duration tracking and student engagement
 - **Student Management**: Track attendance, participation, and engagement levels
@@ -161,7 +164,7 @@ The platform uses an education-focused design:
 - `src/types/meeting.ts` - Educational TypeScript interfaces (Class, ClassSummary)
 - `src/components/meeting/` - All educational UI components
 
-## � Educational Use Cases
+## Educational Use Cases
 
 - **K-12 Schools**: Elementary through high school classroom management
 - **Higher Education**: University lecture and seminar management  
