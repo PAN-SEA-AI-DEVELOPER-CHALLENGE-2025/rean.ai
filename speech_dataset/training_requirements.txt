@@ -1,0 +1,20 @@
+# Core dependencies for training
+torch>=1.9.0
+torchaudio>=0.9.0
+transformers>=4.21.0
+datasets>=2.0.0
+
+# Audio processing
+librosa>=0.9.0
+soundfile>=0.12.0
+
+# Training utilities
+accelerate>=0.12.0
+evaluate>=0.4.0
+
+# Optional: For better performance
+torch-audio-sox  # Better audio backend
+
+# Optional: For monitoring training
+tensorboard
+wandb

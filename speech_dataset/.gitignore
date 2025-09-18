@@ -1,0 +1,68 @@
+# OS / editors
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+__pycache__/
+*.py[cod]
+
+# Python envs
+env/
+venv/
+.venv/
+pip-wheel-metadata/
+*.egg-info/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Logs / runtimes
+logs/
+*.log
+tensorboard/
+run/
+tmp/
+
+# Large dataset directories (don't track raw datasets)
+dataset/
+merged_dataset/
+fixed_mega_dataset/
+mega_dataset/
+lsr42_dataset/
+rinabuoy_audio_temp/
+# audio subfolders anywhere
+**/audio/
+**/wavs/
+
+# Raw audio / compressed audio files
+*.wav
+*.flac
+*.mp3
+*.ogg
+
+# Model weights / checkpoints / heavy binary artifacts
+checkpoints/
+checkpoint-*/
+*.ckpt
+*.pt
+*.bin
+pytorch_model.bin
+*.safetensors
+
+# Cloud / secrets
+.env
+*.key
+*.pem
+google_credentials.json
+credentials.json
+
+# Other generated files
+dist/
+build/
+*.egg
+*.tar.gz
+
+# Keep small manifest/metadata files (do NOT ignore these)
+!**/*manifest*.jsonl
+!**/*manifest*.csv
+!**/dataset_info.json

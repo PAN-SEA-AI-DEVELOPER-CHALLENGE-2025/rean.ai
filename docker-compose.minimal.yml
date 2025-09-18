@@ -1,0 +1,81 @@
+version: '3.8'
+
+services:
+  # Backend service with minimal configuration for testing
+  backend:
+    build:
+      context: ./pan-sea-backend
+      dockerfile: Dockerfile
+    container_name: pan-sea-backend-minimal
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - DEBUG=true
+      - APP_NAME=Pan-Sea Backend
+      - HOST=0.0.0.0
+      - PORT=8000
+      - SECRET_KEY=minimal_test_secret_key_for_development_only
+      - ALGORITHM=HS256
+      - ACCESS_TOKEN_EXPIRE_MINUTES=30
+      - ALLOWED_ORIGINS=http://localhost:3000,http://127.0.0.1:3000
+      - MAX_FILE_SIZE=10485760
+      - UPLOAD_DIR=uploads
+      - AUDIO_CHUNK_DURATION=30
+      - WHISPER_MODEL_SIZE=base
+      - WHISPER_DEVICE=cpu
+      # Dummy Supabase values for testing (app should handle gracefully)
+      - SUPABASE_URL=http://localhost:54321
+      - SUPABASE_KEY=dummy_key_for_testing
+      - SUPABASE_SERVICE_KEY=dummy_service_key_for_testing
+      # Optional API keys (can be left empty for basic testing)
+      - OPENAI_API_KEY=
+      - SEA_LION_API_KEY=sk-4_j_JyJVKD8vZPNGvSam0A
+      - REDIS_URL=redis://localhost:6379
+    volumes:
+      - ./pan-sea-backend/uploads:/app/uploads
+      - backend_minimal_data:/app/data
+      - whisper_cache:/root/.cache/whisper
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8000/docs", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+
+  # Frontend service
+  frontend:
+    build:
+      context: ./pan-sea-frontend
+      dockerfile: Dockerfile
+      args:
+        - NODE_ENV=production
+    container_name: pan-sea-frontend-minimal
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=http://backend:8000
+      - PORT=3000
+      - HOSTNAME=0.0.0.0
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000", "||", "exit", "1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  backend_minimal_data:
+  whisper_cache:
+
+networks:
+  default:
+    name: pan-sea-minimal-network

@@ -1,0 +1,38 @@
+yt-dlp>=2023.10.13
+librosa>=0.10.1
+soundfile>=0.12.1
+numpy>=1.24.0
+scipy>=1.11.0
+ffmpeg-python>=0.2.0
+fastapi>=0.104.1
+uvicorn[standard]>=0.24.0
+python-multipart>=0.0.6
+pydantic>=2.5.0
+python-jose[cryptography]>=3.3.0
+httpx>=0.24.0,<0.26.0
+requests>=2.31.0
+boto3>=1.34.0
+botocore>=1.34.0
+python-dotenv>=1.0.0
+
+# Voice processing dependencies
+webrtcvad>=2.0.10
+openai-whisper>=20231117
+torch>=2.0.0
+torchaudio>=2.0.0
+speechbrain>=0.5.15
+
+# Hugging Face transformers for specialized models
+transformers>=4.25.0
+datasets>=2.3.0
+accelerate>=0.20.0
+
+# MFA (Montreal Forced Alignment) dependencies  
+montreal-forced-alignment>=3.0.0
+praatio>=6.0.0
+textgrid>=1.5
+
+# Additional audio processing
+pydub>=0.25.1
+pandas>=2.0.0
+torch-audio>=0.13.0

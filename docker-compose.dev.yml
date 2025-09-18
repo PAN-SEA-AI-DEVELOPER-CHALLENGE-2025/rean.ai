@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # Backend service for development
+  backend-dev:
+    build:
+      context: ./pan-sea-backend
+      dockerfile: Dockerfile
+    container_name: pan-sea-backend-dev
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - PYTHONUNBUFFERED=1
+      - DEBUG=True
+    volumes:
+      - ./pan-sea-backend:/app
+      - ./pan-sea-backend/uploads:/app/uploads
+      - backend_dev_data:/app/data
+    restart: unless-stopped
+    command: ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+
+  # Frontend service for development
+  frontend-dev:
+    build:
+      context: ./pan-sea-frontend
+      dockerfile: Dockerfile.dev
+    container_name: pan-sea-frontend-dev
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_TELEMETRY_DISABLED=1
+      - NEXT_PUBLIC_API_URL=http://localhost:8000
+      - WATCHPACK_POLLING=true
+    volumes:
+      - ./pan-sea-frontend:/app
+      - /app/node_modules
+      - /app/.next
+    depends_on:
+      - backend-dev
+    restart: unless-stopped
+    command: ["npm", "run", "dev"]
+
+volumes:
+  backend_dev_data:
+
+networks:
+  default:
+    name: pan-sea-dev-network

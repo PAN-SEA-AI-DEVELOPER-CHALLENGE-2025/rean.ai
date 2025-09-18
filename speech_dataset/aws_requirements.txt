@@ -1,0 +1,4 @@
+# AWS S3 Upload Requirements
+boto3>=1.34.0
+tqdm>=4.65.0
+botocore>=1.34.0
