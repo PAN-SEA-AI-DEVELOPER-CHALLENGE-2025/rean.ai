@@ -1,3 +1,6 @@
+<!-- Monorepo note added by script -->
+**Note**: This repository is part of the Pan-Sea monorepo. For monorepo-level setup and services overview, see `../README.md`.
+
 # Pan-Sea Backend
 
 A Python FastAPI backend for the Pan-Sea class teaching summarization system using LLM.

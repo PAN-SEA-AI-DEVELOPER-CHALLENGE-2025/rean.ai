@@ -1,3 +1,6 @@
+<!-- Monorepo note added by script -->
+**Note**: This project is part of the Pan-Sea monorepo. For monorepo-level setup and services overview, see `../README.md`.
+
 # Khmer Voice Scraping & Segmentation API 🇰🇭
 
 A comprehensive FastAPI-based service specialized for Khmer voice processing, scraping, and segmentation with advanced ML capabilities. Designed specifically for processing Khmer language audio content and preparing training data for Khmer speech recognition models.

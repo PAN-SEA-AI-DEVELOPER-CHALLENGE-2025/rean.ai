@@ -1,3 +1,6 @@
+<!-- Monorepo note added by script -->
+**Note**: This project is part of the Pan-Sea monorepo. For monorepo-level setup and services overview, see `../README.md`.
+
 # Dual-Language Speech-to-Text Service
 
 A Flask-based web service that provides speech-to-text transcription using:
