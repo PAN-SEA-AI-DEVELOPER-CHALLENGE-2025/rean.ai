@@ -23,10 +23,10 @@ This repository contains multiple services and tools used for building, transcri
     - Handle authentication flows and file uploads where applicable.
 
 - **whisper-service**
-  - Purpose: Host and serve the speech model(s) used for transcription and tuned whisper models.
+  - Purpose: Host and serve the speech model(s) used for transcription.
   - What it contains: FastAPI endpoints to accept audio, run transcription models (locally or via model server), and return transcription results.
   - Key responsibilities:
-    - Provide a stable HTTP interface to run transcription/tuning models.
+    - Provide a stable HTTP interface to run transcription.
     - Manage model loading, batching, and resource usage for inference.
 
 - **voice-scraping-n-segmentation**
