@@ -42,11 +42,38 @@ async def lifespan(app: FastAPI):
     logger.info("  - Montreal Forced Alignment (MFA)")
     logger.info("  - CSV metadata export")
     logger.info("  - AWS S3 integration")
+    logger.info("  - Database URL verification and tracking")
+    logger.info("  - Queue-based batch processing")
+    
+    # Initialize database and queue services
+    try:
+        from service.database_service import DatabaseService
+        from service.queue_service import QueueService
+        
+        db_service = DatabaseService(config)
+        if db_service.is_available():
+            logger.info("Database service available - initializing queue service")
+            queue_service = QueueService(config)
+            init_result = await queue_service.initialize()
+            if init_result['success']:
+                logger.info("Queue service initialized successfully")
+            else:
+                logger.warning(f"Queue service initialization failed: {init_result.get('error')}")
+        else:
+            logger.warning("Database service not available - queue processing disabled")
+    except Exception as e:
+        logger.error(f"Failed to initialize database/queue services: {e}")
     
     yield
     
     # Shutdown
     logger.info("Shutting down Voice Scraping & Segmentation API")
+    # Close database connections
+    try:
+        if 'queue_service' in locals():
+            await queue_service.close()
+    except Exception as e:
+        logger.error(f"Error during service shutdown: {e}")
 
 
 # Create FastAPI application

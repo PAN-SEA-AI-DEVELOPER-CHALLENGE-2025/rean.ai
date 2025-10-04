@@ -127,6 +127,14 @@ def get_config() -> Dict[str, Any]:
         # CSV encoding for Khmer text
         'csv_encoding': 'utf-8',  # Essential for Khmer Unicode support
         'csv_separator': ',',
+        
+        # Database settings
+        'database_url': os.getenv('DATABASE_URL'),
+        'database_url_async': os.getenv('DATABASE_URL_ASYNC'),
+        
+        # Queue processing settings
+        'max_concurrent_extractions': int(os.getenv('MAX_CONCURRENT_EXTRACTIONS', 3)),
+        'queue_processing_enabled': os.getenv('QUEUE_PROCESSING_ENABLED', 'true').lower() == 'true',
     }
     
     # Create directories if they don't exist

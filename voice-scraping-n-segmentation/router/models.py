@@ -374,3 +374,183 @@ class AsyncProcessingResponse(BaseModel):
     status: str = Field(..., description="Initial task status")
     message: str = Field(..., description="Status message")
     estimated_duration: Optional[float] = Field(None, description="Estimated processing duration in seconds")
+
+
+# Database and Queue Models
+
+class URLRecord(BaseModel):
+    """Model for URL processing record in database."""
+    id: int = Field(..., description="Record ID")
+    youtube_url: str = Field(..., description="YouTube URL")
+    video_id: Optional[str] = Field(None, description="YouTube video ID")
+    video_title: Optional[str] = Field(None, description="Video title")
+    status: str = Field(..., description="Processing status")
+    created_at: datetime = Field(..., description="Record creation time")
+    updated_at: datetime = Field(..., description="Last update time")
+    processed_at: Optional[datetime] = Field(None, description="Processing completion time")
+    file_path: Optional[str] = Field(None, description="Local file path")
+    s3_url: Optional[str] = Field(None, description="S3 URL")
+    s3_key: Optional[str] = Field(None, description="S3 object key")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+    error_message: Optional[str] = Field(None, description="Error message if failed")
+
+
+class URLCheckResponse(BaseModel):
+    """Response model for URL existence check."""
+    exists: bool = Field(..., description="Whether URL exists in database")
+    data: Optional[URLRecord] = Field(None, description="URL record data if exists")
+
+
+class DatabaseResponse(BaseModel):
+    """Generic database operation response."""
+    success: bool = Field(..., description="Operation success")
+    message: Optional[str] = Field(None, description="Response message")
+    data: Optional[Dict[str, Any]] = Field(None, description="Response data")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class ProcessingHistoryResponse(BaseModel):
+    """Response model for processing history."""
+    success: bool = Field(..., description="Request success")
+    data: List[URLRecord] = Field(..., description="URL processing records")
+    total_count: int = Field(..., description="Total number of records")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class QueueRequest(BaseModel):
+    """Request model for adding URLs to processing queue."""
+    urls: List[HttpUrl] = Field(..., min_items=1, max_items=50, description="List of YouTube URLs")
+    batch_size: Optional[int] = Field(None, ge=1, le=10, description="Processing batch size")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+    
+    @validator('urls')
+    def validate_unique_urls(cls, v):
+        if len(v) != len(set(str(url) for url in v)):
+            raise ValueError("URLs must be unique")
+        return v
+
+
+class QueueResponse(BaseModel):
+    """Response model for queue addition."""
+    success: bool = Field(..., description="Queue addition success")
+    data: Optional[Dict[str, Any]] = Field(None, description="Queue information")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class QueueStatus(BaseModel):
+    """Model for queue status information."""
+    queue_id: str = Field(..., description="Queue identifier")
+    status: str = Field(..., description="Queue processing status")
+    total_urls: int = Field(..., description="Total number of URLs")
+    processed_urls: int = Field(..., description="Number of processed URLs")
+    successful_urls: int = Field(..., description="Number of successfully processed URLs")
+    failed_urls: int = Field(..., description="Number of failed URLs")
+    current_url_index: int = Field(..., description="Current URL being processed")
+    batch_size: int = Field(..., description="Processing batch size")
+    progress_percentage: float = Field(..., ge=0, le=100, description="Processing progress percentage")
+    created_at: datetime = Field(..., description="Queue creation time")
+    started_at: Optional[datetime] = Field(None, description="Processing start time")
+    completed_at: Optional[datetime] = Field(None, description="Processing completion time")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata")
+    error_message: Optional[str] = Field(None, description="Error message if failed")
+
+
+class QueueStatusResponse(BaseModel):
+    """Response model for queue status."""
+    success: bool = Field(..., description="Request success")
+    data: Optional[QueueStatus] = Field(None, description="Queue status information")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class QueueListResponse(BaseModel):
+    """Response model for queue listing."""
+    success: bool = Field(..., description="Request success")
+    data: List[QueueStatus] = Field(..., description="List of queues")
+    total_count: int = Field(..., description="Total number of queues")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class QueueCancellationResponse(BaseModel):
+    """Response model for queue cancellation."""
+    success: bool = Field(..., description="Cancellation success")
+    message: str = Field(..., description="Cancellation message")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class EnhancedBatchExtractionRequest(BaseModel):
+    """Enhanced request model for batch audio extraction with queue support."""
+    urls: List[HttpUrl] = Field(..., min_items=1, max_items=50, description="List of YouTube video URLs")
+    use_queue: Optional[bool] = Field(True, description="Use queue for processing (recommended for multiple URLs)")
+    batch_size: Optional[int] = Field(None, ge=1, le=10, description="Processing batch size")
+    prefix: Optional[str] = Field("batch_audio", description="Prefix for output filenames")
+    sample_rate: Optional[int] = Field(None, description="Target sample rate for all extractions")
+    upload_to_s3: Optional[bool] = Field(None, description="Upload extracted audio to S3")
+    skip_existing: Optional[bool] = Field(True, description="Skip URLs that have been processed before")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata for tracking")
+    
+    @validator('urls')
+    def validate_unique_urls(cls, v):
+        if len(v) != len(set(str(url) for url in v)):
+            raise ValueError("URLs must be unique")
+        return v
+    
+    @validator('prefix')
+    def validate_prefix(cls, v):
+        if v is not None:
+            # Remove invalid characters for filenames
+            invalid_chars = '<>:"/\\|?*'
+            for char in invalid_chars:
+                if char in v:
+                    raise ValueError(f"Prefix cannot contain '{char}'")
+        return v
+
+
+class EnhancedBatchExtractionResult(BaseModel):
+    """Enhanced response model for batch extraction results."""
+    success: bool = Field(..., description="Overall operation success")
+    queue_based: bool = Field(..., description="Whether queue-based processing was used")
+    queue_id: Optional[str] = Field(None, description="Queue ID if queue-based")
+    immediate_processing: bool = Field(..., description="Whether processing was done immediately")
+    skipped_existing: int = Field(0, description="Number of URLs skipped (already processed)")
+    message: str = Field(..., description="Result message")
+    data: Dict[str, Any] = Field(..., description="Processing results")
+    error: Optional[str] = Field(None, description="Error message if failed")
+
+
+class EnhancedAudioExtractionRequest(BaseModel):
+    """Enhanced request model for single audio extraction with database verification."""
+    url: HttpUrl = Field(..., description="YouTube video URL")
+    filename: Optional[str] = Field(None, description="Custom output filename (without extension)")
+    start_time: Optional[float] = Field(None, ge=0, description="Start time in seconds")
+    duration: Optional[float] = Field(None, gt=0, description="Duration in seconds")
+    sample_rate: Optional[int] = Field(None, description="Target sample rate")
+    upload_to_s3: Optional[bool] = Field(None, description="Upload extracted audio to S3")
+    force_reprocess: Optional[bool] = Field(False, description="Force reprocessing even if URL exists in database")
+    metadata: Optional[Dict[str, Any]] = Field(None, description="Additional metadata for tracking")
+    
+    @validator('filename')
+    def validate_filename(cls, v):
+        if v is not None:
+            # Remove invalid characters for filenames
+            invalid_chars = '<>:"/\\|?*'
+            for char in invalid_chars:
+                if char in v:
+                    raise ValueError(f"Filename cannot contain '{char}'")
+        return v
+    
+    @validator('sample_rate')
+    def validate_sample_rate(cls, v):
+        if v is not None and v not in [8000, 16000, 22050, 44100, 48000]:
+            raise ValueError("Sample rate must be one of: 8000, 16000, 22050, 44100, 48000")
+        return v
+
+
+class EnhancedExtractionResult(BaseModel):
+    """Enhanced response model for audio extraction with database info."""
+    success: bool = Field(..., description="Extraction success")
+    from_database: bool = Field(..., description="Whether result came from existing database record")
+    reprocessed: bool = Field(False, description="Whether URL was reprocessed")
+    message: str = Field(..., description="Result message")
+    data: AudioFileInfo = Field(..., description="Extracted audio file information")
+    database_record: Optional[URLRecord] = Field(None, description="Database record information")
+    error: Optional[str] = Field(None, description="Error message if failed")
